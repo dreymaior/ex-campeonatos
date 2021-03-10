@@ -62,6 +62,7 @@ public class LeagueService {
         List<Team> contenders = currentLeague.getContenders();
 //        Collections.sort(contenders, new League.RankingComparator(currentLeague));
         // Modificacao aleatoria
+        // Alteração de nova branch
         contenders.sort(new League.RankingComparator(currentLeague));
         contenders.forEach(team -> {
             Map<String, Integer> teamPoints = new HashMap<>();
