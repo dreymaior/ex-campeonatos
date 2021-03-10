@@ -61,6 +61,7 @@ public class LeagueService {
         League currentLeague = this.leagues.get(id);
         List<Team> contenders = currentLeague.getContenders();
 //        Collections.sort(contenders, new League.RankingComparator(currentLeague));
+        // Modificacao aleatoria
         contenders.sort(new League.RankingComparator(currentLeague));
         contenders.forEach(team -> {
             Map<String, Integer> teamPoints = new HashMap<>();
