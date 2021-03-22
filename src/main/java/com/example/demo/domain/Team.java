@@ -21,5 +21,6 @@ public class Team {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name = "team_id", referencedColumnName = "id")
+    @OrderBy("points desc")
     private List<Contender> contends;
 }
