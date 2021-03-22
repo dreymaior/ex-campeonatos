@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.Contender;
 import com.example.demo.domain.League;
 import com.example.demo.domain.Team;
+import com.example.demo.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,61 +13,69 @@ import java.util.stream.Collectors;
 @Service
 public class TeamService {
     @Autowired
+    private TeamRepository repository;
+
+    @Autowired
     private LeagueService leagueService;
-    private List<Team> teams = new ArrayList<>();
 
     public List<Team> listTeams() {
-        return this.teams;
+        return this.repository.findAll();
     }
 
-    public Team getTeam(Integer id) {
-        return this.teams.get(id);
+    public Team getTeam(Long id) {
+        return this.repository.findById(id).get();
     }
 
     public Team createTeam(Map<String, String> params) {
         Team team = new Team();
         team.setName(params.get("name"));
-        this.teams.add(team);
+//        this.teams.add(team);
+        this.repository.save(team);
         return team;
     }
 
-    public Map<String, String> addTeamOnLeague(Integer id, Map<String, Integer> params) {
-        Map<String, String> response = new HashMap<>();
+    public Team addTeamOnLeague(Long id, Map<String, Long> params) {
         League league = this.leagueService.getLeague(params.get("leagueId"));
 
         if (Objects.nonNull(league)) {
             Team team;
-            Integer points = params.get("points");
+            Long points = params.get("points");
             if (Objects.nonNull(points)) {
                 team = this.addTeamOnLeague(id, league, points);
             } else {
                 team = this.addTeamOnLeague(id, league);
             }
-            league.addContender(team);
-            response.put("message", "Success.");
-            return response;
+            return team;
         }
-        response.put("message", "Failed.");
-        response.put("reason", "Campeonato não pode ser nulo.");
-        return response;
+        return null;
     }
 
-    public Team addTeamOnLeague(Integer id, League league) {
-        Team team = this.teams.get(id);
-        team.addTeamOnLeague(league);
+    public Team addTeamOnLeague(Long id, League league) {
+        Team team = this.getTeam(id);
+        Contender contender = new Contender();
+        contender.setLeague(league);
+        contender.setTeam(team);
+        contender.setPoints(0L);
+        team.getContends().add(contender);
+        this.repository.save(team);
         return team;
     }
 
-    public Team addTeamOnLeague(Integer id, League league, Integer points) {
-        Team team = this.teams.get(id);
-        team.addTeamOnLeague(league, points);
+    public Team addTeamOnLeague(Long id, League league, Long points) {
+        Team team = this.getTeam(id);
+        Contender contender = new Contender();
+        contender.setLeague_id(league.getId());
+        contender.setLeague(league);
+        contender.setTeam_id(team.getId());
+        contender.setTeam(team);
+        contender.setPoints(points);
+        team.getContends().add(contender);
+        this.repository.save(team);
         return team;
     }
 
-    public List<Team> getTeamsOnLeague(Integer id) {
-        League league = this.leagueService.getLeague(id);
-        return this.teams.stream()
-                .filter(team -> team.getPointsByLeague().keySet().contains(league))
-                .collect(Collectors.toList());
+    public List<Contender> getTeamLeagues(Long id) {
+        Team team = this.getTeam(id);
+        return team.getContends();
     }
 }

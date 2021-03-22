@@ -19,7 +19,7 @@ public class TeamController {
     }
 
     @GetMapping("/times/{id}")
-    public Team getTeam(@PathVariable Integer id) {
+    public Team getTeam(@PathVariable Long id) {
         return this.service.getTeam(id);
     }
 
@@ -29,7 +29,7 @@ public class TeamController {
     }
 
     @PostMapping("/times/{id}/campeonatos")
-    public Map<String, String> addTeamOnLeague(@PathVariable Integer id, Map<String, Integer> json) {
+    public Team addTeamOnLeague(@PathVariable Long id, Map<String, Long> json) {
         return this.service.addTeamOnLeague(id, json);
     }
 }

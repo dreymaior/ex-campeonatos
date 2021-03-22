@@ -1,0 +1,65 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet id="1" author="andrey@sgsistemas.com.br">
+        <preConditions>
+            <not>
+                <tableExists tableName="league" schemaName="ex1" />
+            </not>
+        </preConditions>
+        <createTable tableName="league" schemaName="ex1">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)" />
+            <column name="begin_date" type="DATE" />
+            <column name="end_date" type="DATE" />
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="andrey@sgsistemas.com.br">
+        <preConditions>
+            <not>
+                <tableExists tableName="team" schemaName="ex1" />
+            </not>
+        </preConditions>
+        <createTable tableName="team" schemaName="ex1">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="VARCHAR(50)" />
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="andrey@sgsistemas.com.br">
+        <preConditions>
+            <not>
+                <tableExists tableName="contender" schemaName="ex1" />
+            </not>
+        </preConditions>
+        <createTable tableName="contender" schemaName="ex1">
+            <column name="league_id" type="BIGINT">
+                <constraints
+                    foreignKeyName="fk_league_id_references_league"
+                    referencedColumnNames="id"
+                    referencedTableName="league"
+                    referencedTableSchemaName="ex1" />
+            </column>
+            <column name="team_id" type="BIGINT">
+                <constraints
+                        foreignKeyName="fk_team_id_references_team"
+                        referencedColumnNames="id"
+                        referencedTableName="team"
+                        referencedTableSchemaName="ex1" />
+            </column>
+            <column name="points" type="BIGINT" />
+        </createTable>
+    </changeSet>
+    <changeSet id="4" author="andrey@sgsistemas.com.br">
+        <addPrimaryKey
+                tableName="contender"
+                constraintName="pk_league_team"
+                columnNames="league_id, team_id"
+                validate="true" />
+    </changeSet>
+</databaseChangeLog>

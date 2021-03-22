@@ -1,33 +1,25 @@
 package com.example.demo.domain;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Getter
+@Setter
 public class Team {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name")
     private String name;
-    private Map<League, Integer> pointsByLeague = new HashMap<>();
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Map<League, Integer> getPointsByLeague() {
-        return pointsByLeague;
-    }
-
-    public Integer getPointsOnLeague(League league) {
-        return this.pointsByLeague.get(league);
-    }
-
-    public void addTeamOnLeague(League league) {
-        this.pointsByLeague.put(league, 0);
-    }
-
-    public void addTeamOnLeague(League league, Integer points) {
-        this.pointsByLeague.put(league, points);
-    }
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "team_id", referencedColumnName = "id")
+    private List<Contender> contends;
 }

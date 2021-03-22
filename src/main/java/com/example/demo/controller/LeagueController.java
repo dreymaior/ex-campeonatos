@@ -1,12 +1,12 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.Contender;
 import com.example.demo.domain.League;
 import com.example.demo.service.LeagueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,12 +21,12 @@ public class LeagueController {
     }
 
     @GetMapping("/campeonatos/{id}")
-    public League getLeague(@PathVariable("id") Integer id) {
+    public League getLeague(@PathVariable("id") Long id) {
         return this.service.getLeague(id);
     }
 
     @GetMapping("/campeonatos/{id}/tabela")
-    public List<Map<String, Integer>> getLeagueRanking(@PathVariable Integer id) {
+    public List<Contender> getLeagueRanking(@PathVariable Long id) {
         return this.service.getLeagueRanking(id);
     }
 
@@ -36,7 +36,7 @@ public class LeagueController {
     }
 
     @PostMapping("/campeonatos/{id}/times")
-    public Map<String, String> addTeamOnLeague(@PathVariable Integer id, @RequestBody Map<String, Integer> json) {
+    public League addTeamOnLeague(@PathVariable Long id, @RequestBody Map<String, Long> json) {
         return this.service.addTeamOnLeague(id, json);
     }
 }
