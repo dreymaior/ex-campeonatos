@@ -64,9 +64,7 @@ public class TeamService {
     public Team addTeamOnLeague(Long id, League league, Long points) {
         Team team = this.getTeam(id);
         Contender contender = new Contender();
-        contender.setLeague_id(league.getId());
         contender.setLeague(league);
-        contender.setTeam_id(team.getId());
         contender.setTeam(team);
         contender.setPoints(points);
         team.getContends().add(contender);

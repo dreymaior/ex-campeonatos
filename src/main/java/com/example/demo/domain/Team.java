@@ -19,8 +19,8 @@ public class Team {
     private String name;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "team_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "team",
+               cascade = CascadeType.MERGE)
     @OrderBy("points desc")
     private List<Contender> contends;
 }

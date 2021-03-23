@@ -31,4 +31,14 @@ public class Contender implements Serializable {
 
     @Column(name = "points")
     private Long points;
+
+    public void setLeague(League league) {
+        this.league_id = league.getId();
+        this.league = league;
+    }
+
+    public void setTeam(Team team) {
+        this.team_id = team.getId();
+        this.team = team;
+    }
 }

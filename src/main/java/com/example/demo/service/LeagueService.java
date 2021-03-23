@@ -45,9 +45,7 @@ public class LeagueService implements Serializable {
         Long points = params.get("points");
 
         Contender contender = new Contender();
-        contender.setLeague_id(league.getId());
         contender.setLeague(league);
-        contender.setTeam_id(team.getId());
         contender.setTeam(team);
         contender.setPoints(points);
         league.getContenders().add(contender);
