@@ -29,7 +29,6 @@ public class TeamService {
     public Team createTeam(Map<String, String> params) {
         Team team = new Team();
         team.setName(params.get("name"));
-//        this.teams.add(team);
         this.repository.save(team);
         return team;
     }
